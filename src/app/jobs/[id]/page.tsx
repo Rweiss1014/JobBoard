@@ -220,15 +220,21 @@ export default function JobDetailPage() {
 
         {/* Apply Button */}
         <div className="flex flex-wrap items-center gap-4">
-          <a
-            href={job.sourceUrl || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            Apply Now
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </a>
+          {job.sourceUrl ? (
+            <a
+              href={job.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Apply Now
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </a>
+          ) : (
+            <span className="inline-flex items-center px-6 py-3 bg-gray-400 text-white font-medium rounded-lg cursor-not-allowed">
+              Application Link Unavailable
+            </span>
+          )}
           <div className="text-sm text-gray-500">
             <Clock className="w-4 h-4 inline mr-1" />
             Posted {formatDistanceToNow(postedDate, { addSuffix: true })}

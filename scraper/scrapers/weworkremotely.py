@@ -55,16 +55,28 @@ class WeWorkRemotelyScraper(BaseScraper):
                 for item in items:
                     title_elem = item.find("title")
                     desc_elem = item.find("description")
-                    link_elem = item.find("link")
                     category_elem = item.find("category")
 
-                    if not title_elem or not link_elem:
+                    # RSS link can be tricky - try multiple methods
+                    link_elem = item.find("link")
+                    guid_elem = item.find("guid")
+
+                    # Get URL from link or guid
+                    url = ""
+                    if link_elem:
+                        # Try to get text, or next sibling text (RSS quirk)
+                        url = link_elem.get_text(strip=True)
+                        if not url and link_elem.next_sibling:
+                            url = str(link_elem.next_sibling).strip()
+                    if not url and guid_elem:
+                        url = guid_elem.get_text(strip=True)
+
+                    if not title_elem or not url:
                         continue
 
                     title = title_elem.get_text(strip=True)
                     description = desc_elem.get_text(strip=True) if desc_elem else ""
                     category = category_elem.get_text(strip=True) if category_elem else ""
-                    url = link_elem.get_text(strip=True)
 
                     # Check if job is L&D related
                     text_to_check = f"{title} {description} {category}".lower()

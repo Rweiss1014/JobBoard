@@ -28,6 +28,26 @@
 
 ---
 
+#### Update 3: Connected GitHub Repository
+**Time:** ~10:45 PM EST
+**Repository:** `https://github.com/Rweiss1014/JobBoard`
+**Changes Made:**
+- Added GitHub remote to local project
+- Pushed all code to GitHub main branch
+- Vercel can now be connected to auto-deploy from GitHub
+
+**Status:** Complete
+
+---
+
+#### Update 4: Updated Stripe Webhook Endpoint
+**Time:** ~10:42 PM EST
+**Old Endpoint:** `https://ld-exchange-eyx6g05h7-rweiss1014s-projects.vercel.app/api/stripe/webhook` (preview URL)
+**New Endpoint:** `https://ld-exchange.vercel.app/api/stripe/webhook` (production URL)
+**Status:** Updated in Stripe Dashboard
+
+---
+
 ### Pending Items
 
 1. **Stripe Webhook Configuration (Vercel)**

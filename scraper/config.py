@@ -37,51 +37,80 @@ JOB_SOURCES = [
         "enabled": True,
     },
     {
-        "name": "Training Industry",
-        "base_url": "https://trainingindustry.com/jobs",
-        "parser": "training_industry",
-        "enabled": False,  # Not yet implemented
+        "name": "RemoteOK",
+        "base_url": "https://remoteok.com/api",
+        "parser": "remoteok",
+        "enabled": True,
     },
     {
-        "name": "ATD Job Bank",
-        "base_url": "https://jobs.td.org",
-        "parser": "atd_jobs",
-        "enabled": False,  # Not yet implemented
+        "name": "Learning Guild",
+        "base_url": "https://www.learningguild.com/jobs/",
+        "parser": "learningguild",
+        "enabled": True,
     },
 ]
 
 # L&D Keywords for filtering (be specific to avoid false positives like "machine learning")
 LD_KEYWORDS = [
+    # Core L&D roles
     "instructional design",
     "instructional designer",
     "e-learning developer",
     "elearning developer",
     "elearning designer",
+    "e-learning designer",
     "learning and development",
     "l&d manager",
     "l&d specialist",
+    "l&d coordinator",
+    # Training roles
     "corporate training",
     "training specialist",
     "training manager",
     "training coordinator",
+    "training developer",
+    "training facilitator",
+    "technical trainer",
+    "sales trainer",
+    "customer trainer",
+    "trainer role",
+    # Learning design
     "learning experience designer",
     "learning designer",
+    "learning experience",
+    "lxd ",
+    # Curriculum
     "curriculum developer",
     "curriculum development",
     "curriculum designer",
+    "curriculum specialist",
+    # Tools & Tech
     "articulate storyline",
     "articulate rise",
+    "articulate 360",
     "adobe captivate",
+    "captivate developer",
     "lms administrator",
+    "lms manager",
     "learning management system",
+    "scorm",
+    "xapi",
+    # Other L&D roles
     "talent development",
-    "training facilitator",
     "learning consultant",
     "course developer",
     "course designer",
+    "content developer",
     "employee training",
     "corporate learning",
     "organizational learning",
+    "onboarding specialist",
+    "enablement specialist",
+    "sales enablement",
+    "customer education",
+    "product trainer",
+    "knowledge management",
+    "training content",
 ]
 
 # Category mapping based on job title/description keywords

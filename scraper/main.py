@@ -27,7 +27,7 @@ from config import (
     JOB_SOURCES,
 )
 from models import ScrapedJob
-from scrapers import ELearningIndustryScraper, WeWorkRemotelyScraper
+from scrapers import ELearningIndustryScraper, WeWorkRemotelyScraper, RemoteOKScraper, LearningGuildScraper
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,6 +40,8 @@ logger = logging.getLogger(__name__)
 SCRAPER_CLASSES = {
     "elearning_industry": ELearningIndustryScraper,
     "weworkremotely": WeWorkRemotelyScraper,
+    "remoteok": RemoteOKScraper,
+    "learningguild": LearningGuildScraper,
 }
 
 

@@ -109,19 +109,48 @@
 - Switched to `html.parser` for BeautifulSoup
 - Successfully tested: 223 jobs found, 10 scraped in dry run
 
-**Status:** Code complete - needs Firebase credentials to save to Firestore
+**Status:** Complete
+
+---
+
+#### Update 9: Connected Scraper to Firestore & First Successful Run
+**Time:** ~1:00 AM EST
+**Files:** `scraper/config.py`, `scraper/main.py`, `scraper/models.py`, `firestore.indexes.json`
+**Changes Made:**
+- Updated `config.py` to load `.env.local` from parent directory
+- Updated `main.py` to read `FIREBASE_SERVICE_ACCOUNT_KEY` from env var (JSON string)
+- Fixed date calculation bug in `models.py` (was using `day + 30`, now uses `timedelta(days=30)`)
+- Added error handling for `expire_old_jobs()` function
+- Added composite index for `status` + `expiresAt` query
+- Disabled Training Industry and ATD scrapers (not yet implemented)
+
+**First Run Results:**
+- 223 job URLs found from sitemap
+- 100 jobs scraped and saved to Firestore
+- Jobs now appear on the live site
+
+**How to Run:**
+```bash
+cd scraper
+python main.py          # Run once, scrape and save to Firestore
+python main.py --dry-run # Test without saving
+python main.py --daemon  # Run continuously every 6 hours
+```
+
+**Status:** Complete - 100 jobs in Firestore!
 
 ---
 
 ### Pending Items
 
-1. **Configure Firebase Credentials for Scraper**
-   - Create `scraper/firebase-credentials.json` with service account key
-   - Run `python main.py` to scrape and save jobs to Firestore
+1. **Schedule Scraper for Regular Runs**
+   - Option A: Run `python main.py --daemon` on a server
+   - Option B: Set up GitHub Actions workflow for daily/weekly runs
+   - Option C: Use a cron job or task scheduler
 
-2. **Schedule Scraper**
-   - Can run as daemon: `python main.py --daemon`
-   - Or set up GitHub Actions / cron job for regular runs
+2. **Add More Job Sources**
+   - Training Industry (`trainingindustry.com/jobs`) - disabled, needs implementation
+   - ATD Job Bank (`jobs.td.org`) - disabled, needs implementation
 
 ---
 

@@ -31,6 +31,12 @@ JOB_SOURCES = [
         "enabled": True,
     },
     {
+        "name": "We Work Remotely",
+        "base_url": "https://weworkremotely.com/remote-jobs.rss",
+        "parser": "weworkremotely",
+        "enabled": True,
+    },
+    {
         "name": "Training Industry",
         "base_url": "https://trainingindustry.com/jobs",
         "parser": "training_industry",
@@ -44,28 +50,38 @@ JOB_SOURCES = [
     },
 ]
 
-# L&D Keywords for filtering
+# L&D Keywords for filtering (be specific to avoid false positives like "machine learning")
 LD_KEYWORDS = [
     "instructional design",
     "instructional designer",
-    "e-learning",
-    "elearning",
+    "e-learning developer",
+    "elearning developer",
+    "elearning designer",
     "learning and development",
-    "l&d",
+    "l&d manager",
+    "l&d specialist",
     "corporate training",
     "training specialist",
     "training manager",
-    "learning experience",
+    "training coordinator",
+    "learning experience designer",
+    "learning designer",
     "curriculum developer",
     "curriculum development",
+    "curriculum designer",
     "articulate storyline",
     "articulate rise",
     "adobe captivate",
     "lms administrator",
-    "learning management",
+    "learning management system",
     "talent development",
     "training facilitator",
     "learning consultant",
+    "course developer",
+    "course designer",
+    "employee training",
+    "corporate learning",
+    "organizational learning",
 ]
 
 # Category mapping based on job title/description keywords

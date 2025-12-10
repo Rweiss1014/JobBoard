@@ -2,15 +2,19 @@
 Configuration for the L&D Exchange Job Scraper
 """
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load .env.local from parent directory (ld-exchange root)
+env_path = Path(__file__).parent.parent / ".env.local"
+load_dotenv(env_path)
 
 # API Keys
 ZENROWS_API_KEY = os.getenv("ZENROWS_API_KEY")
 SCRAPERAPI_KEY = os.getenv("SCRAPERAPI_KEY")
 
-# Firebase
+# Firebase - use JSON string from env var or fall back to file
+FIREBASE_SERVICE_ACCOUNT_KEY = os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY")
 FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH", "firebase-credentials.json")
 
 # Scraping Configuration
@@ -19,7 +23,6 @@ JOB_EXPIRY_DAYS = 30  # How long before jobs expire
 MAX_JOBS_PER_SOURCE = 100  # Maximum jobs to scrape per source
 
 # L&D Job Board Sources
-# These are example URLs - in production, you'd scrape actual job boards
 JOB_SOURCES = [
     {
         "name": "eLearning Industry",
@@ -31,13 +34,13 @@ JOB_SOURCES = [
         "name": "Training Industry",
         "base_url": "https://trainingindustry.com/jobs",
         "parser": "training_industry",
-        "enabled": True,
+        "enabled": False,  # Not yet implemented
     },
     {
         "name": "ATD Job Bank",
         "base_url": "https://jobs.td.org",
         "parser": "atd_jobs",
-        "enabled": True,
+        "enabled": False,  # Not yet implemented
     },
 ]
 

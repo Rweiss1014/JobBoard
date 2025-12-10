@@ -40,8 +40,8 @@ class ScrapedJob:
 
     def to_firestore_dict(self) -> dict:
         """Convert to Firestore document format"""
-        expiry_date = datetime.utcnow()
-        expiry_date = expiry_date.replace(day=expiry_date.day + 30)
+        from datetime import timedelta
+        expiry_date = datetime.utcnow() + timedelta(days=30)
 
         return {
             "id": self.id,

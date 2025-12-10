@@ -15,9 +15,12 @@ import time
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+import json
+
 from config import (
     ZENROWS_API_KEY,
     SCRAPERAPI_KEY,
+    FIREBASE_SERVICE_ACCOUNT_KEY,
     FIREBASE_CREDENTIALS_PATH,
     SCRAPE_INTERVAL_HOURS,
     MAX_JOBS_PER_SOURCE,
@@ -45,7 +48,16 @@ SCRAPER_CLASSES = {
 def init_firebase():
     """Initialize Firebase Admin SDK"""
     try:
-        cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
+        # Try JSON string from env var first
+        if FIREBASE_SERVICE_ACCOUNT_KEY:
+            cred_dict = json.loads(FIREBASE_SERVICE_ACCOUNT_KEY)
+            cred = credentials.Certificate(cred_dict)
+            logger.info("Using Firebase credentials from env var")
+        else:
+            # Fall back to file
+            cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
+            logger.info("Using Firebase credentials from file")
+
         firebase_admin.initialize_app(cred)
         logger.info("Firebase initialized successfully")
     except Exception as e:
@@ -107,27 +119,31 @@ def save_jobs_to_firestore(jobs: List[ScrapedJob]):
 def expire_old_jobs():
     """
     Mark jobs as expired if they're past their expiry date.
+    Note: Requires a composite index on (status, expiresAt)
     """
-    db = get_db()
-    jobs_collection = db.collection("jobs")
+    try:
+        db = get_db()
+        jobs_collection = db.collection("jobs")
 
-    now = datetime.utcnow()
+        now = datetime.utcnow()
 
-    # Query for active jobs that should be expired
-    expired_jobs = jobs_collection.where("status", "==", "active").where(
-        "expiresAt", "<", now
-    ).stream()
+        # Query for active jobs that should be expired
+        expired_jobs = jobs_collection.where("status", "==", "active").where(
+            "expiresAt", "<", now
+        ).stream()
 
-    expired_count = 0
-    for doc in expired_jobs:
-        try:
-            doc.reference.update({"status": "expired"})
-            expired_count += 1
-        except Exception as e:
-            logger.error(f"Error expiring job {doc.id}: {e}")
+        expired_count = 0
+        for doc in expired_jobs:
+            try:
+                doc.reference.update({"status": "expired"})
+                expired_count += 1
+            except Exception as e:
+                logger.error(f"Error expiring job {doc.id}: {e}")
 
-    if expired_count > 0:
-        logger.info(f"Expired {expired_count} old jobs")
+        if expired_count > 0:
+            logger.info(f"Expired {expired_count} old jobs")
+    except Exception as e:
+        logger.warning(f"Could not expire old jobs (index may be missing): {e}")
 
 
 def dedupe_jobs():

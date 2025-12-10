@@ -48,6 +48,36 @@
 
 ---
 
+#### Update 5: Fixed Missing Source Files in Git
+**Time:** ~11:25 PM EST
+**Issue:** Vercel build failing with "module-not-found" errors
+**Root Cause:** Source files (components, lib, api routes) were not tracked by git
+**Changes Made:**
+- Added all source files to git: `src/components/`, `src/lib/`, `src/types/`, `src/app/api/`
+- Added Firebase config files: `firebase.json`, `firestore.rules`, `firestore.indexes.json`
+- Pushed 29 files to GitHub
+
+**Status:** Complete
+
+---
+
+#### Update 6: Added Firebase Environment Variables to Vercel
+**Time:** ~11:55 PM EST
+**Issue:** Build failing with `Firebase: Error (auth/invalid-api-key)`
+**Root Cause:** Client-side Firebase env vars missing from Vercel
+**Variables Added:**
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+- `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`
+
+**Status:** Complete - Build succeeded!
+
+---
+
 ### Pending Items
 
 1. **Stripe Webhook Configuration (Vercel)**

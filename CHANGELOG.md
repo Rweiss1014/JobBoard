@@ -78,21 +78,31 @@
 
 ---
 
+## 2025-12-10
+
+### Session Updates
+
+#### Update 7: Added Missing Firestore Index for Jobs Query
+**Time:** ~12:00 AM EST
+**File:** `firestore.indexes.json`
+**Issue:** Jobs page console error: "The query requires an index"
+**Root Cause:** The jobs page query uses `status` + `postedAt` fields, but only a 3-field index existed (`status` + `isFeatured` + `postedAt`)
+**Changes Made:**
+- Added new composite index with 2 fields: `status` (ASC) + `postedAt` (DESC)
+- Deployed indexes to Firebase: `npx firebase-tools deploy --only firestore:indexes`
+- Added `.firebase` to `.gitignore` to prevent tracking build artifacts
+- Fixed git history to remove accidentally committed large files
+- Pushed changes to GitHub
+
+**Status:** Complete - Vercel will auto-deploy
+
+---
+
 ### Pending Items
 
-1. **Stripe Webhook Configuration (Vercel)**
-   - The webhook endpoint needs to be registered in Stripe Dashboard for production
-   - URL: `https://[your-vercel-domain]/api/stripe/webhook`
-   - Event: `checkout.session.completed`
-   - The `STRIPE_WEBHOOK_SECRET` in `.env.local` is: `whsec_0YQRaR9bclgirl48E9PGBp4iP1JTWJFT`
-   - **Make sure this same secret is set in Vercel environment variables**
-
-2. **Push Code to GitHub/Vercel**
-   - The jobs page update needs to be committed and pushed
-   - Git push was interrupted due to large `.firebase` folder being tracked
-
-3. **Clean up .gitignore**
-   - The `.firebase` build folder should be added to `.gitignore` to prevent tracking build artifacts
+1. **Test Job Posting**
+   - Post a new job and verify it appears on the jobs page
+   - The Firestore index may take a few minutes to become active
 
 ---
 

@@ -137,7 +137,26 @@ python main.py --dry-run # Test without saving
 python main.py --daemon  # Run continuously every 6 hours
 ```
 
-**Status:** Complete - 100 jobs in Firestore!
+**Status:** Complete
+
+---
+
+#### Update 10: Cleaned Up Old Jobs & Added Recent-Only Filter
+**Time:** ~1:30 AM EST
+**Files:** `scraper/scrapers/elearning_industry.py`, `scraper/cleanup_old_jobs.py`, `src/app/jobs/page.tsx`
+**Changes Made:**
+- Removed mock data from jobs page - now shows only real Firestore jobs
+- Updated scraper to only fetch jobs from current year (filters by URL date pattern)
+- Created cleanup script to delete old scraped jobs
+- Deleted 100 old jobs (2016-2024), kept 3 recent jobs
+- Re-ran scraper: added 2 recent jobs from 2025
+
+**Result:**
+- Jobs page now shows only real, recent jobs
+- Direct posts show "Direct" badge
+- Scraped jobs show "via eLearning Industry"
+
+**Status:** Complete
 
 ---
 

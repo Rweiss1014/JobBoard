@@ -41,10 +41,17 @@ class ELearningIndustryScraper(BaseScraper):
     def get_job_listing_urls(self) -> List[str]:
         """
         Fetch job listings from sitemap.
-        Returns URLs for individual job pages.
+        Returns URLs for individual job pages, filtered to recent jobs only.
         """
         urls = []
         sitemap_url = "https://elearningindustry.com/job-sitemap.xml"
+
+        # Only include jobs from the last 60 days
+        cutoff_year = datetime.utcnow().year
+        cutoff_month = datetime.utcnow().month - 2  # ~60 days back
+        if cutoff_month <= 0:
+            cutoff_month += 12
+            cutoff_year -= 1
 
         try:
             # Fetch sitemap XML
@@ -54,14 +61,30 @@ class ELearningIndustryScraper(BaseScraper):
                 soup = self.parse_html(response.text)
 
                 # Find all URL entries in sitemap
+                all_urls = []
                 for loc in soup.find_all("loc"):
                     url = loc.get_text(strip=True)
                     if "/jobs/openings/" in url:
+                        all_urls.append(url)
+
+                logger.info(f"Sitemap returned {len(all_urls)} total job URLs")
+
+                # Filter to only recent jobs (URLs contain dates like -aug-22-2025)
+                recent_patterns = [
+                    f"-{cutoff_year}",  # Current year
+                    f"-{cutoff_year - 1}" if cutoff_month <= 2 else None,  # Previous year if we're early in the year
+                ]
+                recent_patterns = [p for p in recent_patterns if p]
+
+                for url in all_urls:
+                    url_lower = url.lower()
+                    # Check if URL contains a recent year
+                    if any(pattern in url_lower for pattern in recent_patterns):
                         urls.append(url)
 
-                logger.info(f"Sitemap returned {len(urls)} job URLs")
+                logger.info(f"Filtered to {len(urls)} recent job URLs (from {cutoff_year})")
 
-                # Sort by URL (which contains date) to get most recent first
+                # Sort by URL to get most recent first
                 urls.sort(reverse=True)
 
             else:

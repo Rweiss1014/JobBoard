@@ -5,7 +5,6 @@ import { Search, Briefcase, Loader2 } from 'lucide-react';
 import JobCard from '@/components/JobCard';
 import JobFilters from '@/components/JobFilters';
 import { JobFilters as JobFiltersType, Job } from '@/types';
-import { mockJobs } from '@/lib/mockData';
 import { db } from '@/lib/firebase';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 
@@ -62,9 +61,9 @@ export default function JobsPage() {
     fetchJobs();
   }, []);
 
-  // Combine Firestore jobs with mock jobs
+  // Use only Firestore jobs (no mock data)
   const allJobs = useMemo(() => {
-    return [...firestoreJobs, ...mockJobs];
+    return firestoreJobs;
   }, [firestoreJobs]);
 
   const filteredJobs = useMemo(() => {

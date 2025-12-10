@@ -79,7 +79,7 @@ class BaseScraper(ABC):
 
     def parse_html(self, html: str) -> BeautifulSoup:
         """Parse HTML content using BeautifulSoup"""
-        return BeautifulSoup(html, "lxml")
+        return BeautifulSoup(html, "html.parser")
 
     @abstractmethod
     def get_job_listing_urls(self) -> List[str]:
@@ -103,6 +103,14 @@ class BaseScraper(ABC):
             logger.info(f"Found {len(job_urls)} job URLs from {self.name}")
 
             for url in job_urls[:max_jobs]:
+                # Try to parse with cached data first (no page fetch needed)
+                job = self.parse_job_page(url, "")
+                if job:
+                    jobs.append(job)
+                    logger.info(f"Scraped: {job.title} at {job.company}")
+                    continue
+
+                # If no cached data, fetch the page
                 html = self.fetch_page(url)
                 if html:
                     job = self.parse_job_page(url, html)

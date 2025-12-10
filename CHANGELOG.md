@@ -98,11 +98,30 @@
 
 ---
 
+#### Update 8: Completed eLearning Industry Scraper
+**Time:** ~12:30 AM EST
+**Files:** `scraper/scrapers/elearning_industry.py`, `scraper/scrapers/base.py`, `scraper/requirements.txt`
+**Changes Made:**
+- Updated scraper to use sitemap (`job-sitemap.xml`) for job discovery
+- Added JSON-LD parsing for reliable job data extraction
+- Added fallback HTML parsing
+- Removed lxml dependency (incompatible with Python 3.14)
+- Switched to `html.parser` for BeautifulSoup
+- Successfully tested: 223 jobs found, 10 scraped in dry run
+
+**Status:** Code complete - needs Firebase credentials to save to Firestore
+
+---
+
 ### Pending Items
 
-1. **Test Job Posting**
-   - Post a new job and verify it appears on the jobs page
-   - The Firestore index may take a few minutes to become active
+1. **Configure Firebase Credentials for Scraper**
+   - Create `scraper/firebase-credentials.json` with service account key
+   - Run `python main.py` to scrape and save jobs to Firestore
+
+2. **Schedule Scraper**
+   - Can run as daemon: `python main.py --daemon`
+   - Or set up GitHub Actions / cron job for regular runs
 
 ---
 
